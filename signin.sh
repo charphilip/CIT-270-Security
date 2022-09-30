@@ -1,1 +1,0 @@
-curl -v -d "@signin.json" -X POST -M "Content-Type:application/json" http://localhost:3000/login
