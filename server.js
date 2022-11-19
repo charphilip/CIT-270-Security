@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const {v4 : uuidv4} = require("uuid");
 const fs = require('fs');
 const https = require('https');
-const port = 4043;//3000
+const port = 443;//3000
 const app = express();
 const redis = require("redis");
 const md5 = require('md5');
@@ -16,10 +16,15 @@ const redisClient = createClient(
 
 app.use(bodyParser.json());
 
+app.use(express.static("Public"))
+
 https.createServer({
-    key: fs.readFileSync('/usr/src/app/SSL/server.key'),
-    cert: fs.readFileSync('/usr/src/app/SSL/server.cert'),
-    ca: fs.readFileSync('/usr/src/app/SSL/chain.pem')
+    key: fs.readFileSync('./SSL/server.key'),
+    cert: fs.readFileSync('./SSL/server.cert'),
+    ca: fs.readFileSync('./SSL/chain.pem')
+    // key: fs.readFileSync('/usr/src/app/SSL/server.key'),
+    // cert: fs.readFileSync('/usr/src/app/SSL/server.cert'),
+    // ca: fs.readFileSync('/usr/src/app/SSL/chain.pem')
 }, app).listen(port, async () => {
     try{
         await redisClient.connect();
